@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>验证码点选示例</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "PingFang SC",
+        "Microsoft YaHei", sans-serif;
+      background: #f3f4f6;
+      display: flex;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 480px;
+      padding: 16px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px 20px 24px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    .card-header {
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: #111827;
+    }
+
+    .card-subtitle {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: #374151;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .form-input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: none;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #2563eb;
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 8px;
+      transition: transform 0.08s ease, box-shadow 0.08s ease,
+        background-color 0.1s ease;
+    }
+
+    .btn-submit:hover {
+      background: #1d4ed8;
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    .btn-submit[disabled] {
+      cursor: not-allowed;
+      opacity: 0.7;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .submit-msg {
+      margin-top: 8px;
+      font-size: 13px;
+      min-height: 1.2em;
+    }
+
+    .submit-msg.ok {
+      color: #16a34a;
+    }
+
+    .submit-msg.error {
+      color: #dc2626;
+    }
+
+    /* 点击式验证码样式 */
+    #click-captcha {
+      font-family: inherit;
+      display: inline-block;
+      border: 1px solid #e5e7eb;
+      padding: 12px 14px;
+      border-radius: 10px;
+      user-select: none;
+      background: #f9fafb;
+      width: 100%;
+    }
+
+    #click-captcha .cc-title {
+      font-size: 13px;
+      margin-bottom: 8px;
+      color: #374151;
+    }
+
+    #click-captcha .cc-grid {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    #click-captcha .cc-item {
+      min-width: 32px;
+      text-align: center;
+      padding: 6px 8px;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      background: #ffffff;
+      transition: transform 0.1s ease, box-shadow 0.1s ease,
+        border-color 0.1s ease, background-color 0.1s ease;
+    }
+
+    #click-captcha .cc-item:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      border-color: #9ca3af;
+      background: #f3f4ff;
+    }
+
+    #click-captcha .cc-item:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    #click-captcha .cc-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    #click-captcha .cc-msg {
+      min-height: 1.2em;
+      color: #6b7280;
+    }
+
+    #click-captcha .cc-msg.ok {
+      color: #16a34a;
+    }
+
+    #click-captcha .cc-msg.error {
+      color: #dc2626;
+    }
+
+    #click-captcha .cc-refresh-btn {
+      border: 1px solid #d1d5db;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      background: #ffffff;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background-color 0.1s ease, border-color 0.1s ease,
+        transform 0.08s ease;
+    }
+
+    #click-captcha .cc-refresh-btn:hover {
+      background: #f3f4f6;
+      border-color: #9ca3af;
+      transform: translateY(-0.5px);
+    }
+
+    #click-captcha .cc-refresh-btn:active {
+      transform: translateY(0);
+    }
+
+    .footer-tip {
+      margin-top: 16px;
+      font-size: 12px;
+      color: #9ca3af;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">验证码点选网站示例</div>
+        <div class="card-subtitle">
+          请输入账号并完成下面的点击式验证码，然后点击提交。
+        </div>
+      </div>
+
+      <form id="demo-form">
+        <div class="form-group">
+          <label class="form-label" for="username">账号 / 邮箱：</label>
+          <input
+            id="username"
+            name="username"
+            class="form-input"
+            type="text"
+            placeholder="例如：test@example.com"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">验证码：</label>
+          <div id="click-captcha"></div>
+        </div>
+
+        <button type="submit" class="btn-submit">
+          提交表单
+          <span aria-hidden="true">→</span>
+        </button>
+
+        <div id="submit-msg" class="submit-msg"></div>
+      </form>
+
+      <div class="footer-tip">
+        你可以直接把本页面作为静态网站上传到 GitHub Pages 使用。
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 点击式验证码逻辑
+    (function () {
+      function initClickCaptcha(container) {
+        if (!container) return;
+
+        function createCaptcha() {
+          container.innerHTML = "";
+
+          const title = document.createElement("div");
+          title.className = "cc-title";
+
+          const grid = document.createElement("div");
+          grid.className = "cc-grid";
+
+          const footer = document.createElement("div");
+          footer.className = "cc-footer";
+
+          const msg = document.createElement("div");
+          msg.className = "cc-msg";
+
+          const refreshBtn = document.createElement("button");
+          refreshBtn.type = "button";
+          refreshBtn.className = "cc-refresh-btn";
+          refreshBtn.textContent = "换一题";
+
+          footer.appendChild(msg);
+          footer.appendChild(refreshBtn);
+
+          container.appendChild(title);
+          container.appendChild(grid);
+          container.appendChild(footer);
+
+          // 生成验证码内容
+          const letters = "ABCDEFGHJKLMNPQRSTUVWXYZ"; // 去掉 I O
+          const pool = letters.split("");
+          const items = [];
+
+          for (let i = 0; i < 6; i++) {
+            const ch = pool[Math.floor(Math.random() * pool.length)];
+            items.push(ch);
+          }
+
+          const target = items[Math.floor(Math.random() * items.length)];
+          title.textContent = "请点击下面的字母： " + target;
+
+          // 打乱顺序
+          items.sort(function () {
+            return Math.random() - 0.5;
+          });
+
+          function setMsg(text, type) {
+            msg.textContent = text || "";
+            msg.classList.remove("ok", "error");
+            if (type) msg.classList.add(type);
+          }
+
+          setMsg("请按提示点击。");
+
+          // 0 = 未通过，1 = 已通过
+          container.dataset.valid = "0";
+
+          items.forEach(function (ch) {
+            const item = document.createElement("div");
+            item.className = "cc-item";
+            item.textContent = ch;
+
+            item.addEventListener("click", function () {
+              if (ch === target) {
+                setMsg("验证通过 ✅", "ok");
+                container.dataset.valid = "1";
+              } else {
+                setMsg("点击错误，已重新出题。", "error");
+                setTimeout(createCaptcha, 450);
+              }
+            });
+
+            grid.appendChild(item);
+          });
+
+          refreshBtn.onclick = function () {
+            createCaptcha();
+          };
+        }
+
+        createCaptcha();
+      }
+
+      // 页面加载后初始化
+      document.addEventListener("DOMContentLoaded", function () {
+        const captchaContainer = document.getElementById("click-captcha");
+        initClickCaptcha(captchaContainer);
+
+        const form = document.getElementById("demo-form");
+        const submitMsg = document.getElementById("submit-msg");
+
+        function setSubmitMsg(text, type) {
+          submitMsg.textContent = text || "";
+          submitMsg.classList.remove("ok", "error");
+          if (type) submitMsg.classList.add(type);
+        }
+
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const username = document.getElementById("username").value.trim();
+          const valid =
+            captchaContainer && captchaContainer.dataset.valid === "1";
+
+          if (!username) {
+            setSubmitMsg("请先填写账号 / 邮箱。", "error");
+            return;
+          }
+
+          if (!valid) {
+            setSubmitMsg("请先完成验证码验证。", "error");
+            return;
+          }
+
+          // 这里模拟“提交成功”
+          setSubmitMsg("提交成功！(这里可以接你的后端接口)", "ok");
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
