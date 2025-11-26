@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>验证码点选示例</title>
+  <title>点击圆圈验证码示例</title>
   <style>
     * {
       box-sizing: border-box;
@@ -13,24 +13,26 @@
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "PingFang SC",
         "Microsoft YaHei", sans-serif;
-      background: #f3f4f6;
-      display: flex;
+      background: #0f172a;
       min-height: 100vh;
+      display: flex;
       align-items: center;
       justify-content: center;
+      color: #e5e7eb;
     }
 
     .page {
       width: 100%;
-      max-width: 480px;
+      max-width: 520px;
       padding: 16px;
     }
 
     .card {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 20px 20px 24px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      background: radial-gradient(circle at top left, #1e293b, #020617);
+      border-radius: 18px;
+      padding: 20px 22px 24px;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.25);
     }
 
     .card-header {
@@ -41,190 +43,166 @@
       font-size: 20px;
       font-weight: 700;
       margin-bottom: 4px;
-      color: #111827;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title-badge {
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(96, 165, 250, 0.7);
+      color: #93c5fd;
     }
 
     .card-subtitle {
       font-size: 13px;
-      color: #6b7280;
+      color: #9ca3af;
     }
 
-    .form-group {
-      margin-bottom: 16px;
+    .captcha-box {
+      margin-top: 16px;
+      padding: 12px 12px 14px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(55, 65, 81, 0.9);
     }
 
-    .form-label {
-      display: block;
+    .captcha-title {
       font-size: 14px;
-      margin-bottom: 6px;
-      color: #374151;
+      margin-bottom: 4px;
     }
 
-    .form-input {
-      width: 100%;
-      padding: 8px 10px;
-      border-radius: 8px;
-      border: 1px solid #d1d5db;
-      font-size: 14px;
-      outline: none;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    .captcha-desc {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 8px;
     }
 
-    .form-input:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
+    .circle-area {
+      position: relative;
+      margin-top: 8px;
+      margin-bottom: 10px;
+      height: 180px;
+      border-radius: 12px;
+      background: radial-gradient(circle at top, #111827, #020617);
+      overflow: hidden;
     }
 
-    .btn-submit {
-      width: 100%;
-      padding: 10px 16px;
+    .circle {
+      position: absolute;
+      width: 80px;
+      height: 80px;
       border-radius: 999px;
-      border: none;
-      font-size: 15px;
-      font-weight: 600;
+      background: radial-gradient(circle at 30% 20%, #fef3c7, #f97316);
+      box-shadow:
+        0 0 25px rgba(249, 115, 22, 0.7),
+        0 0 60px rgba(251, 146, 60, 0.5);
       cursor: pointer;
-      background: #2563eb;
-      color: #ffffff;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      margin-top: 8px;
-      transition: transform 0.08s ease, box-shadow 0.08s ease,
-        background-color 0.1s ease;
-    }
-
-    .btn-submit:hover {
-      background: #1d4ed8;
-      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
-      transform: translateY(-1px);
-    }
-
-    .btn-submit:active {
-      transform: translateY(0);
-      box-shadow: none;
-    }
-
-    .btn-submit[disabled] {
-      cursor: not-allowed;
-      opacity: 0.7;
-      box-shadow: none;
-      transform: none;
-    }
-
-    .submit-msg {
-      margin-top: 8px;
-      font-size: 13px;
-      min-height: 1.2em;
-    }
-
-    .submit-msg.ok {
-      color: #16a34a;
-    }
-
-    .submit-msg.error {
-      color: #dc2626;
-    }
-
-    /* 点击式验证码样式 */
-    #click-captcha {
-      font-family: inherit;
-      display: inline-block;
-      border: 1px solid #e5e7eb;
-      padding: 12px 14px;
-      border-radius: 10px;
-      user-select: none;
-      background: #f9fafb;
-      width: 100%;
-    }
-
-    #click-captcha .cc-title {
-      font-size: 13px;
-      margin-bottom: 8px;
-      color: #374151;
-    }
-
-    #click-captcha .cc-grid {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 8px;
-    }
-
-    #click-captcha .cc-item {
-      min-width: 32px;
-      text-align: center;
-      padding: 6px 8px;
-      border-radius: 999px;
-      border: 1px solid #d1d5db;
-      cursor: pointer;
-      font-weight: 600;
+      color: #111827;
+      font-weight: 700;
       font-size: 14px;
-      background: #ffffff;
-      transition: transform 0.1s ease, box-shadow 0.1s ease,
-        border-color 0.1s ease, background-color 0.1s ease;
+      user-select: none;
+      transition: transform 0.08s ease, box-shadow 0.08s ease,
+        background 0.1s ease;
     }
 
-    #click-captcha .cc-item:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-      border-color: #9ca3af;
-      background: #f3f4ff;
+    .circle:hover {
+      transform: scale(1.06);
+      box-shadow:
+        0 0 30px rgba(249, 115, 22, 0.8),
+        0 0 70px rgba(251, 146, 60, 0.7);
     }
 
-    #click-captcha .cc-item:active {
-      transform: translateY(0);
-      box-shadow: none;
+    .circle:active {
+      transform: scale(0.98);
+      box-shadow:
+        0 0 18px rgba(249, 115, 22, 0.6),
+        0 0 40px rgba(251, 146, 60, 0.5);
     }
 
-    #click-captcha .cc-footer {
+    .circle--second {
+      background: radial-gradient(circle at 30% 20%, #e0f2fe, #3b82f6);
+      box-shadow:
+        0 0 25px rgba(59, 130, 246, 0.7),
+        0 0 60px rgba(96, 165, 250, 0.6);
+    }
+
+    .captcha-status {
+      font-size: 12px;
+      min-height: 1.4em;
+      color: #9ca3af;
+    }
+
+    .captcha-status.ok {
+      color: #4ade80;
+    }
+
+    .captcha-status.error {
+      color: #f97373;
+    }
+
+    .captcha-status.bot {
+      color: #f97316;
+    }
+
+    .captcha-footer {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
+      margin-top: 8px;
       font-size: 12px;
-    }
-
-    #click-captcha .cc-msg {
-      min-height: 1.2em;
       color: #6b7280;
     }
 
-    #click-captcha .cc-msg.ok {
-      color: #16a34a;
+    .captcha-info {
+      opacity: 0.9;
     }
 
-    #click-captcha .cc-msg.error {
-      color: #dc2626;
-    }
-
-    #click-captcha .cc-refresh-btn {
-      border: 1px solid #d1d5db;
+    .captcha-btn-refresh {
       border-radius: 999px;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
       padding: 4px 10px;
       font-size: 12px;
-      background: #ffffff;
       cursor: pointer;
-      white-space: nowrap;
-      transition: background-color 0.1s ease, border-color 0.1s ease,
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.08s ease, border-color 0.08s ease,
         transform 0.08s ease;
     }
 
-    #click-captcha .cc-refresh-btn:hover {
-      background: #f3f4f6;
-      border-color: #9ca3af;
+    .captcha-btn-refresh:hover {
+      background: rgba(31, 41, 55, 0.95);
+      border-color: rgba(148, 163, 184, 0.9);
       transform: translateY(-0.5px);
     }
 
-    #click-captcha .cc-refresh-btn:active {
+    .captcha-btn-refresh:active {
       transform: translateY(0);
     }
 
-    .footer-tip {
-      margin-top: 16px;
-      font-size: 12px;
-      color: #9ca3af;
-      text-align: center;
+    .hint {
+      margin-top: 14px;
+      font-size: 11px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .hint code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+      font-size: 11px;
+      background: rgba(15, 23, 42, 0.9);
+      padding: 2px 5px;
+      border-radius: 4px;
+      border: 1px solid rgba(51, 65, 85, 0.9);
     }
   </style>
 </head>
@@ -232,166 +210,235 @@
   <div class="page">
     <div class="card">
       <div class="card-header">
-        <div class="card-title">验证码点选网站示例</div>
+        <div class="card-title">
+          点击圆圈验证码
+          <span class="card-title-badge">行为验证 · Demo</span>
+        </div>
         <div class="card-subtitle">
-          请输入账号并完成下面的点击式验证码，然后点击提交。
+          模拟 Cloudflare 风格的人机验证：两次点击圆圈，并根据点击时间差来判断是否为 bot。
         </div>
       </div>
 
-      <form id="demo-form">
-        <div class="form-group">
-          <label class="form-label" for="username">账号 / 邮箱：</label>
-          <input
-            id="username"
-            name="username"
-            class="form-input"
-            type="text"
-            placeholder="例如：test@example.com"
-            autocomplete="off"
-          />
+      <div class="captcha-box" id="circle-captcha" data-valid="0">
+        <div class="captcha-title">验证规则：</div>
+        <div class="captcha-desc">
+          第一步：点击第一个圆圈。<br />
+          第二步：等待随机&nbsp;1–2&nbsp;秒出现第二个圆圈，再次点击。<br />
+          如果第二次点击与第一次点击的时间差 &gt; 6 秒，则判定为 bot。
         </div>
 
-        <div class="form-group">
-          <label class="form-label">验证码：</label>
-          <div id="click-captcha"></div>
+        <div class="circle-area" id="circle-area">
+          <!-- 圆圈通过 JS 动态创建 -->
         </div>
 
-        <button type="submit" class="btn-submit">
-          提交表单
-          <span aria-hidden="true">→</span>
-        </button>
+        <div id="captcha-status" class="captcha-status">
+          请先点击第一个圆圈开始验证。
+        </div>
 
-        <div id="submit-msg" class="submit-msg"></div>
-      </form>
+        <div class="captcha-footer">
+          <div class="captcha-info" id="captcha-info">
+            等待操作…
+          </div>
+          <button type="button" id="captcha-refresh" class="captcha-btn-refresh">
+            重置验证
+          </button>
+        </div>
+      </div>
 
-      <div class="footer-tip">
-        你可以直接把本页面作为静态网站上传到 GitHub Pages 使用。
+      <div class="hint">
+        你可以在表单提交前检测：
+        <code>dataset.valid === "1"</code> 来判断是否通过验证。
       </div>
     </div>
   </div>
 
   <script>
-    // 点击式验证码逻辑
     (function () {
-      function initClickCaptcha(container) {
-        if (!container) return;
+      const container = document.getElementById("circle-captcha");
+      const area = document.getElementById("circle-area");
+      const statusEl = document.getElementById("captcha-status");
+      const infoEl = document.getElementById("captcha-info");
+      const refreshBtn = document.getElementById("captcha-refresh");
 
-        function createCaptcha() {
-          container.innerHTML = "";
+      if (!container || !area) return;
 
-          const title = document.createElement("div");
-          title.className = "cc-title";
+      const STATE = {
+        step: 0, // 0: 等待第一次点击, 1: 等待第二个圆圈出现, 2: 等待第二次点击, 3: 完成
+        firstClickTime: null,
+        secondClickTime: null,
+        timerId: null,
+        delayMs: null
+      };
 
-          const grid = document.createElement("div");
-          grid.className = "cc-grid";
+      const CIRCLE_SIZE = 80;
+      const MAX_INTERVAL_MS = 6000; // 6 秒判定 bot
 
-          const footer = document.createElement("div");
-          footer.className = "cc-footer";
-
-          const msg = document.createElement("div");
-          msg.className = "cc-msg";
-
-          const refreshBtn = document.createElement("button");
-          refreshBtn.type = "button";
-          refreshBtn.className = "cc-refresh-btn";
-          refreshBtn.textContent = "换一题";
-
-          footer.appendChild(msg);
-          footer.appendChild(refreshBtn);
-
-          container.appendChild(title);
-          container.appendChild(grid);
-          container.appendChild(footer);
-
-          // 生成验证码内容
-          const letters = "ABCDEFGHJKLMNPQRSTUVWXYZ"; // 去掉 I O
-          const pool = letters.split("");
-          const items = [];
-
-          for (let i = 0; i < 6; i++) {
-            const ch = pool[Math.floor(Math.random() * pool.length)];
-            items.push(ch);
-          }
-
-          const target = items[Math.floor(Math.random() * items.length)];
-          title.textContent = "请点击下面的字母： " + target;
-
-          // 打乱顺序
-          items.sort(function () {
-            return Math.random() - 0.5;
-          });
-
-          function setMsg(text, type) {
-            msg.textContent = text || "";
-            msg.classList.remove("ok", "error");
-            if (type) msg.classList.add(type);
-          }
-
-          setMsg("请按提示点击。");
-
-          // 0 = 未通过，1 = 已通过
-          container.dataset.valid = "0";
-
-          items.forEach(function (ch) {
-            const item = document.createElement("div");
-            item.className = "cc-item";
-            item.textContent = ch;
-
-            item.addEventListener("click", function () {
-              if (ch === target) {
-                setMsg("验证通过 ✅", "ok");
-                container.dataset.valid = "1";
-              } else {
-                setMsg("点击错误，已重新出题。", "error");
-                setTimeout(createCaptcha, 450);
-              }
-            });
-
-            grid.appendChild(item);
-          });
-
-          refreshBtn.onclick = function () {
-            createCaptcha();
-          };
-        }
-
-        createCaptcha();
+      function setStatus(text, type) {
+        statusEl.textContent = text || "";
+        statusEl.classList.remove("ok", "error", "bot");
+        if (type) statusEl.classList.add(type);
       }
 
-      // 页面加载后初始化
-      document.addEventListener("DOMContentLoaded", function () {
-        const captchaContainer = document.getElementById("click-captcha");
-        initClickCaptcha(captchaContainer);
+      function setInfo(text) {
+        infoEl.textContent = text || "";
+      }
 
-        const form = document.getElementById("demo-form");
-        const submitMsg = document.getElementById("submit-msg");
-
-        function setSubmitMsg(text, type) {
-          submitMsg.textContent = text || "";
-          submitMsg.classList.remove("ok", "error");
-          if (type) submitMsg.classList.add(type);
+      function clearArea() {
+        while (area.firstChild) {
+          area.removeChild(area.firstChild);
         }
+      }
 
-        form.addEventListener("submit", function (e) {
-          e.preventDefault();
+      function centerCircle(circle) {
+        const rect = area.getBoundingClientRect();
+        const x = (rect.width - CIRCLE_SIZE) / 2;
+        const y = (rect.height - CIRCLE_SIZE) / 2;
+        circle.style.left = x + "px";
+        circle.style.top = y + "px";
+      }
 
-          const username = document.getElementById("username").value.trim();
-          const valid =
-            captchaContainer && captchaContainer.dataset.valid === "1";
+      function randomCirclePosition(circle) {
+        const rect = area.getBoundingClientRect();
+        const padding = 10;
+        const maxX = Math.max(padding, rect.width - CIRCLE_SIZE - padding);
+        const maxY = Math.max(padding, rect.height - CIRCLE_SIZE - padding);
 
-          if (!username) {
-            setSubmitMsg("请先填写账号 / 邮箱。", "error");
-            return;
-          }
+        const x = padding + Math.random() * (maxX - padding);
+        const y = padding + Math.random() * (maxY - padding);
 
-          if (!valid) {
-            setSubmitMsg("请先完成验证码验证。", "error");
-            return;
-          }
+        circle.style.left = x + "px";
+        circle.style.top = y + "px";
+      }
 
-          // 这里模拟“提交成功”
-          setSubmitMsg("提交成功！(这里可以接你的后端接口)", "ok");
+      function createFirstCircle() {
+        clearArea();
+        const circle = document.createElement("div");
+        circle.className = "circle circle--first";
+        circle.textContent = "1";
+
+        centerCircle(circle);
+
+        circle.addEventListener("click", function () {
+          if (STATE.step !== 0) return;
+
+          STATE.firstClickTime = performance.now();
+          STATE.step = 1;
+          container.dataset.valid = "0";
+
+          setStatus("第一步已完成，正在准备第二个圆圈…", "ok");
+
+          // 1–2 秒随机延迟
+          const delay = 1000 + Math.random() * 1000;
+          STATE.delayMs = delay;
+          setInfo("等待第二个圆圈出现（随机延迟中）…");
+
+          // 禁用第一个圆圈点击
+          circle.style.pointerEvents = "none";
+          circle.style.opacity = "0.6";
+
+          STATE.timerId = setTimeout(function () {
+            STATE.step = 2;
+            createSecondCircle();
+            setStatus("第二个圆圈已出现，请尽快点击完成验证。", null);
+            setInfo(
+              "第二个圆圈已生成。系统将检测两次点击的时间差（> 6s 判定为 bot）。"
+            );
+          }, delay);
         });
+
+        area.appendChild(circle);
+      }
+
+      function createSecondCircle() {
+        clearArea();
+
+        const circle = document.createElement("div");
+        circle.className = "circle circle--second";
+        circle.textContent = "2";
+
+        // 第二个圆圈位置随机
+        randomCirclePosition(circle);
+
+        circle.addEventListener("click", function () {
+          if (STATE.step !== 2) return;
+          STATE.secondClickTime = performance.now();
+          STATE.step = 3;
+
+          const diffMs = STATE.secondClickTime - STATE.firstClickTime;
+          const diffSec = (diffMs / 1000).toFixed(2);
+
+          if (diffMs > MAX_INTERVAL_MS) {
+            // 判定为 bot
+            setStatus(
+              "用时 " +
+                diffSec +
+                " 秒，超过 6 秒，疑似 bot，验证失败并已重置。",
+              "bot"
+            );
+            container.dataset.valid = "0";
+            setInfo("规则：两次点击间隔 > 6 秒 → 判定为机器人行为。");
+
+            // 1 秒后重置
+            setTimeout(function () {
+              resetCaptcha();
+            }, 1000);
+          } else {
+            // 判定为人类
+            setStatus(
+              "用时 " +
+                diffSec +
+                " 秒，验证通过，当前会话认为是人类用户。",
+              "ok"
+            );
+            container.dataset.valid = "1";
+            setInfo("你可以在表单提交逻辑中检查 data-valid=1 来确认通过。");
+
+            // 锁定圆圈
+            circle.style.pointerEvents = "none";
+          }
+        });
+
+        area.appendChild(circle);
+      }
+
+      function resetCaptcha() {
+        // 清除状态
+        if (STATE.timerId) {
+          clearTimeout(STATE.timerId);
+          STATE.timerId = null;
+        }
+        STATE.step = 0;
+        STATE.firstClickTime = null;
+        STATE.secondClickTime = null;
+        STATE.delayMs = null;
+        container.dataset.valid = "0";
+
+        setStatus("请点击第一个圆圈开始验证。", null);
+        setInfo("等待操作…");
+
+        createFirstCircle();
+      }
+
+      refreshBtn.addEventListener("click", function () {
+        resetCaptcha();
+      });
+
+      // 初始化
+      resetCaptcha();
+
+      // 如果窗口大小变化，简单做一个重新布局（不强制）
+      window.addEventListener("resize", function () {
+        // 只有在第一步或第二步进行中时才重布居
+        if (STATE.step === 0 || STATE.step === 2) {
+          const circle = area.querySelector(".circle");
+          if (circle) {
+            if (STATE.step === 0) {
+              centerCircle(circle);
+            } else if (STATE.step === 2) {
+              randomCirclePosition(circle);
+            }
+          }
+        }
       });
     })();
   </script>
