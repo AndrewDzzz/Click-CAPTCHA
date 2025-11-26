@@ -215,7 +215,7 @@
           <span class="card-title-badge">行为验证 · Demo</span>
         </div>
         <div class="card-subtitle">
-          模拟 Cloudflare 风格的人机验证：两次点击圆圈，并根据点击时间差来判断是否为 bot。
+          两次点击圆圈
         </div>
       </div>
 
@@ -223,8 +223,8 @@
         <div class="captcha-title">验证规则：</div>
         <div class="captcha-desc">
           第一步：点击第一个圆圈。<br />
-          第二步：等待随机&nbsp;1–2&nbsp;秒出现第二个圆圈，再次点击。<br />
-          如果第二次点击与第一次点击的时间差 &gt; 6 秒，则判定为 bot。
+          第二步：等待二个圆圈出现，再次点击。<br />
+          
         </div>
 
         <div class="circle-area" id="circle-area">
@@ -330,7 +330,7 @@
           // 1–2 秒随机延迟
           const delay = 1000 + Math.random() * 1000;
           STATE.delayMs = delay;
-          setInfo("等待第二个圆圈出现（随机延迟中）…");
+          setInfo("等待第二个圆圈出现");
 
           // 禁用第一个圆圈点击
           circle.style.pointerEvents = "none";
@@ -341,7 +341,7 @@
             createSecondCircle();
             setStatus("第二个圆圈已出现，请尽快点击完成验证。", null);
             setInfo(
-              "第二个圆圈已生成。系统将检测两次点击的时间差（> 6s 判定为 bot）。"
+              ""
             );
           }, delay);
         });
@@ -376,7 +376,7 @@
               "bot"
             );
             container.dataset.valid = "0";
-            setInfo("规则：两次点击间隔 > 6 秒 → 判定为机器人行为。");
+            setInfo("");
 
             // 1 秒后重置
             setTimeout(function () {
